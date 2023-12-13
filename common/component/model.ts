@@ -1,4 +1,4 @@
-import { Message } from "../../api/model/chat";
+import { MessageType } from "../../types/chat";
 
 export const createMesage = ({
   id,
@@ -6,7 +6,7 @@ export const createMesage = ({
 }: {
   id: string;
   message: string;
-}) : Message  => {
+}) : MessageType  => {
   return {
     index: 0,
     from: id,

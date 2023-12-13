@@ -1,20 +1,16 @@
 import { atom } from "recoil";
-import { Message } from "../api/model/chat";
+import { UserType } from "../types/user";
+import { ChatRoomType, MessageType } from "../types/chat";
 
-const chatRoomMessagesInitial : Message[] = [];
+const chatRoomMessagesInitial : MessageType[] = [];
 
-export const chatRoomMessagesState = atom<Message[]>({
+export const chatRoomMessagesState = atom<MessageType[]>({
   key: "chatRoomMessagesSt2ate",
   default: chatRoomMessagesInitial,
 });
 
-export type UserType = {
-  id: string,
-  name: string
-}
-
 const userInital : UserType = {
-  id: "me",
+  id: "",
   name: ""
 }
 
@@ -35,5 +31,16 @@ export type LastReciveMessagesType = {
 export const lastReciveMessagesState = atom<LastReciveMessagesType|any>( {
   key: "lastReciveMessagesState",
   default: {
+  }
+})
+
+export const chatRoomInformationState = atom<ChatRoomType>( {
+  key: "chatRoomInformationState",
+  default: {
+    id:-1,
+    name:"",
+    description: "",
+    users:[],
+    owner: ""
   }
 })
