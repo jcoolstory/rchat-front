@@ -2,7 +2,7 @@ import type { NextPageContext } from "next";
 import Head from "next/head";
 import ChatInput from "../../common/component/ChatInput";
 import ChatHistoryWindow from "../../common/component/ChatHistoryWindow";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   LastReciveMessagesType,
@@ -15,7 +15,9 @@ import { Navigation } from "../../common/component/Navigation";
 import ChatUserList from "../../common/component/ChatUserList";
 import { useMessages } from "../../common/hooks/chatting";
 import SettingView from "../../common/component/SettingView";
-import { EnterNamePopup } from "../../common/component/EnterName";
+import {Socket, io} from 'socket.io-client';
+
+let socket:Socket ;
 
 const ChatRoomPage = ({
   roomData,
@@ -27,6 +29,7 @@ const ChatRoomPage = ({
 
   const setRoomInformation = useSetRecoilState(chatRoomInformationState);
   const setChatMessages = useSetRecoilState(chatRoomMessagesState);
+  const [socketState, setScoketState] = useState<Socket>();
   const [receiveMessage, setReceiveMessage] =
   useRecoilState<LastReciveMessagesType>(lastReciveMessagesState);
 
@@ -59,6 +62,47 @@ const ChatRoomPage = ({
   
   const { sendMessage } = useMessages(roomData);
 
+
+  // 소켓 연결
+  useEffect(() => {
+      var socket: any;
+    socket = io("http://localhost:3001");
+    socket.emit("join_room", roomData.id);
+    setScoketState(socket);
+    // const socketInitializer = async () => {
+    //   await fetch('/api/socket');
+    //   socket = io();
+
+    //   socket.on('connect', () => {
+    //     console.log('connected', socket);
+    //     // setConnected(true);
+    //   });
+
+    //   socket.on('error', (error: any) => {
+    //     console.log(error);
+    //   });
+
+    //   socket.on('message', (message: any) => {
+    //     console.log("message" , message)
+    //   });
+    // };
+    // socketInitializer();
+
+    // 브라우저가 꺼지면 소켓 연결 종료
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    };
+  }, []);
+
+  const handleMessage = async (message: MessageType) =>{
+    // const response = await axios.post("/api/chat", message);
+    if (socketState)
+      socketState.emit("send_msg", message);
+    sendMessage(message);
+  }
+
   return (
     <div >
       <Head>
@@ -69,7 +113,7 @@ const ChatRoomPage = ({
       <main >
         <Navigation title={roomData.name}/>
         <ChatHistoryWindow/>
-        <ChatInput sendMessage={sendMessage} />
+        <ChatInput sendMessage={handleMessage} />
       </main>
       <SettingView/>
       <ChatUserList/>
