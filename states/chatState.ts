@@ -1,10 +1,11 @@
 import { atom } from "recoil";
 import { UserType } from "../types/user";
-import { ChatRoomType, MessageType } from "../types/chat";
+import { ChatRoomType, ChatMessageType } from "../types/chat";
+import { WSManager } from "../common/model/chat";
 
-const chatRoomMessagesInitial : MessageType[] = [];
+const chatRoomMessagesInitial : ChatMessageType[] = [];
 
-export const chatRoomMessagesState = atom<MessageType[]>({
+export const chatRoomMessagesState = atom<ChatMessageType[]>({
   key: "chatRoomMessagesSt2ate",
   default: chatRoomMessagesInitial,
 });
@@ -37,10 +38,15 @@ export const lastReciveMessagesState = atom<LastReciveMessagesType|any>( {
 export const chatRoomInformationState = atom<ChatRoomType>( {
   key: "chatRoomInformationState",
   default: {
-    id:-1,
+    id:"-1",
     name:"",
     description: "",
     users:[],
     owner: ""
   }
+})
+
+export const webSocketState = atom<WSManager>( {
+  key: "webSocketState",
+  default: undefined
 })

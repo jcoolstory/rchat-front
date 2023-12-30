@@ -1,9 +1,9 @@
 import { KeyboardEvent, useRef, useState } from "react";
 import { createMesage } from "./model";
-import { MessageType } from "../../types/chat";
+import { ChatMessageType } from "../../types/chat";
 
 type ChatInputProps = {
-  sendMessage: (nessage: MessageType) => void;
+  sendMessage: (nessage:string) => void;
 };
 
 const ChatInput = ({ sendMessage }: ChatInputProps) => {
@@ -17,8 +17,7 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
         event.preventDefault();
         const trimMessage = inputMessage.trim();
       if (!trimMessage) return;
-      const message: MessageType = createMesage({ id: "", message: trimMessage });
-      sendMessage(message);
+      sendMessage(trimMessage);
       setInputMessage("");
       if (inputRef.current) curserPos.current = inputRef.current.selectionStart;
     }
@@ -36,7 +35,7 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
       placeholder="메세지를 입력하세요."
       value={inputMessage}
       onChange={(e) => setInputMessage(e.target.value)}
-      onKeyDown={handleKeydown}
+      onKeyPress={handleKeydown}
     ></textarea>
   );
 };

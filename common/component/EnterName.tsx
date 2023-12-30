@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import styles from "./Chating.module.css";
-import { showEnterNamePopupState } from "./uiState";
+import { saveId, showEnterNamePopupState } from "./uiState";
 import { UserType } from "../../types/user";
 import { userState } from "../../states/chatState";
 import { useEffect, useState } from "react";
@@ -10,15 +10,9 @@ export const EnterNamePopup = () => {
   const [user, setUser] = useRecoilState<UserType>(userState);
   const [id, setId] = useState(user.id);
 
-  useEffect( () => {
-    if (!user.id) {
-      setShow(true)
-    }
-  }, [])
-
   const handleSaveClick = () => {
-    setUser({ ...user,id });
-    console.log(id)
+    setUser({ ...user, id });
+    saveId(id);
     setShow(false);
   };
 

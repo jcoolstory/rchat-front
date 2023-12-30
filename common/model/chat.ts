@@ -1,16 +1,13 @@
-import { ChatRoomType, MessageType } from "../../types/chat";
-
+import { ChatRoomType, ChatMessageType, TrDataType, TrType } from "../../types/chat";
 
 export type PayloadPollingMessage = {
-  lastReadIndex: number,
-  roomId: number,
-}
+};
 
 export type PayloadSendMessage = {
-  message: MessageType
-} & PayloadPollingMessage
+  message: ChatMessageType;
+} & PayloadPollingMessage;
 
-export const chatHistory : any = {
+export const chatHistory: any = {
   0: [
     {
       index: 0,
@@ -29,73 +26,114 @@ export const chatHistory : any = {
       timestamp: Date.now(),
       from: "sdf",
       message: "sdfhdsello",
-    }
-  ]
-}
+    },
+  ],
+};
 
 export const rooms: ChatRoomType[] = [
   {
-    id: 0,
+    id: "0",
     name: "기본방",
     description:
       "preset-env에 targets property를 사용하면 특정 브라우저에서만 해당 preset이 적용되도록 할 수 있다.",
     owner: "me",
-    users: ["sdf", "me"]
+    users: ["sdf", "me"],
   },
   {
-    id: 1,
+    id: "1",
     name: "기본방1",
     description:
       "preset-env에 targets property를 사용하면 특정 브라우저에서만 해당 preset이 적용되도록 할 수 있다.",
-      owner: "me",
-      users: ["sdf", "me"]
+    owner: "me",
+    users: ["sdf", "me"],
   },
   {
-    id: 3,
+    id: "3",
     name: "기본방2",
     description:
       "preset-env에 targets property를 사용하면 특정 브라우저에서만 해당 preset이 적용되도록 할 수 있다.",
-      owner: "me",
-      users: ["sdf", "me"]
-  },
-  {
-    id: 5,
-    name: "기본방3",
-    description:
-      "preset-env에 targets property를 사용하면 특정 브라우저에서만 해당 preset이 적용되도록 할 수 있다.",
-      owner: "me",
-      users: ["sdf", "me"]
-  },
-  {
-    id: 6,
-    name: "기본방4",
-    description:
-      "preset-env에 targets property를 사용하면 특정 브라우저에서만 해당 preset이 적용되도록 할 수 있다.",
-      owner: "me",
-      users: ["sdf", "me"]
-  },
-  {
-    id: 7,
-    name: "기본방5",
-    description:
-      "preset-env에 targets property를 사용하면 특정 브라우저에서만 해당 preset이 적용되도록 할 수 있다.",
-      owner: "me",
-      users: ["sdf", "me"]
-  },
-  {
-    id: 9,
-    name: "기본방7",
-    description:
-      "preset-env에 targets property를 사용하면 특정 브라우저에서만 해당 preset이 적용되도록 할 수 있다.",
-      owner: "me",
-      users: ["sdf", "me"]
-  },
-  {
-    id: 11,
-    name: "기본방8",
-    description:
-      "preset-env에 targets property를 사용하면 특정 브라우저에서만 해당 preset이 적용되도록 할 수 있다.",
-      owner: "me",
-      users: ["sdf", "me"]
-  },
+    owner: "me",
+    users: ["sdf", "me"],
+  }
 ];
+
+type ReceiveCallback  =  (data:TrDataType) => void
+
+export class WSManager {
+  private session: WebSocket | null = null;
+  private receiveHandlers: ReceiveCallback[] = [];
+
+  constructor() {}
+
+  connect(url: string, id: string) {
+    const ws = new WebSocket(url);
+    this.session = ws;
+    ws.onopen = (event) => {
+      this.sendCommand({cmd: "connect", id})
+    };
+
+    // recieve message every start page
+    ws.onmessage = (e: MessageEvent) => {
+      const message = JSON.parse(e.data);
+      this.receiveMessage(message);
+    };
+    return this.session;
+  }
+
+  sendMessage(message: string | any) {
+    this.session?.send(JSON.stringify(this.createChatMessage(message)));
+  }
+
+  sendDirectMessage(message: string| any) {
+    this.session?.send(JSON.stringify(this.createDirectMessage(message)));
+  }
+
+  receiveMessage(message: any) {
+    this.receiveHandlers.forEach((cb: Function) => {
+      cb(message);
+    });
+  }
+
+  onReceive(callback: ReceiveCallback) {
+    this.receiveHandlers.push(callback);
+  }
+
+  onRemoveReceive(callback:any) {
+    const index = this.receiveHandlers.findIndex(callback);
+    this.receiveHandlers.splice(index,1);
+  }
+
+  close() {
+    this.receiveHandlers = [];
+    this.session?.close();
+  }
+
+  createChatMessage(message: any): TrDataType {
+    return {
+      type: TrType.chatroom,
+      subType: "",
+      content: message,
+    };
+  }
+
+  createDirectMessage(message: any) : TrDataType {
+    return {
+      type: TrType.private_message,
+      subType: "",
+      content: message
+    }
+  }
+
+  sendCommand(message: string| any) {
+    this.session?.send(
+      JSON.stringify({
+        type: "cmd",
+        subType: "",
+        content: message,
+      })
+    );
+  }
+}
+
+
+export let wsm : WSManager = new WSManager();

@@ -45,7 +45,7 @@ const Dashboard = ({rooms}: {rooms: ChatRoomType[]}) => {
 };
 
 Dashboard.getInitialProps = async (ctx: NextPageContext) => {
-    const res = await fetch('http://localhost:3000/api/chatrooms');
+    const res = await fetch('http://localhost:13000/api/chatrooms');
     const json = await res.json();
     return {rooms:json} 
 }

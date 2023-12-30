@@ -2,13 +2,13 @@ import { useRecoilValue } from "recoil";
 import { chatRoomMessagesState, userState } from "../../states/chatState";
 import styles from "./Chating.module.css";
 import { useEffect, useMemo, useRef } from "react";
-import { MessageType } from "../../types/chat";
+import { ChatMessageType } from "../../types/chat";
 
 const MessageBalloon = ({
   message,
   isSelf,
 }: {
-  message: MessageType;
+  message: ChatMessageType;
   isSelf: boolean;
 }) => {
     
@@ -20,7 +20,7 @@ const MessageBalloon = ({
 };
 
 const SelfMessageBalloon = ({message}: {
-    message: MessageType;
+    message: ChatMessageType;
   }) => {
 
     return (
@@ -30,15 +30,15 @@ const SelfMessageBalloon = ({message}: {
     );
 }
 
-const OtherMessageBallon = ({ message }: { message: MessageType }) => {
+const OtherMessageBallon = ({ message }: { message: ChatMessageType }) => {
     const profileName = useMemo( () => {
-        return message.from.slice(0,2).toUpperCase()
+        return message.sender.slice(0,2).toUpperCase()
     }, [message])
   return (
     <div className={styles.message}>
       <div className={styles.profile}>{profileName}</div>
       <div className={styles.othermessage}>
-        <div className={styles.name}>{message.from}</div>
+        <div className={styles.name}>{message.sender}</div>
         <div className={styles.ballon}>{message.message}</div>
       </div>
     </div>
@@ -61,8 +61,8 @@ const ChatHistoryWindow = () => {
 
   return (
     <div className={styles.chatwindow}>
-      {chatMessages.map((v, i) => (
-        <MessageBalloon message={v} key={i} isSelf={user.id === v.from} />
+      {chatMessages && chatMessages.map((v, i) => (
+        <MessageBalloon message={v} key={i} isSelf={user.id === v.sender} />
       ))}
       <div ref={bottomRef} />
     </div>

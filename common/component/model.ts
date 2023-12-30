@@ -1,15 +1,17 @@
-import { MessageType } from "../../types/chat";
+import { ChatMessageType } from "../../types/chat";
 
 export const createMesage = ({
+  roomId,
   id,
   message,
 }: {
+  roomId:string,
   id: string;
   message: string;
-}) : MessageType  => {
+}) : ChatMessageType  => {
   return {
-    index: 0,
-    from: id,
+    roomId: roomId,
+    sender: id,
     message: message,
   };
 };

@@ -158,3 +158,18 @@
 .footer {
     text-align: right;
 }
+
+.main {
+    display: flex;
+}
+
+.dContainer {
+    display: block;
+    width: 100%;
+}
+
+.left {
+    width: 200px;
+    border-right: 1px solid #eee;
+
+}

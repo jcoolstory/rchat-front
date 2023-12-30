@@ -8,8 +8,7 @@ export default function handler(
   res: NextApiResponse<ChatRoomType|any>
 ) {
   const { id } = req.query;
-  let idNum = Number(id);
-  const findRoom = rooms.filter(v=> idNum === v.id);
+  const findRoom = rooms.filter(v=> id === v.id);
 
   if (findRoom.length == 0)
     res.status(200).json({});
