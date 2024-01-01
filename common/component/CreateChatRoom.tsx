@@ -1,15 +1,10 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import styles from "./Chating.module.css";
 import { createChatViewPopupState } from "./uiState";
-import { ChangeEvent, useMemo, useState } from "react";
-import { wsm } from "../model/chat";
+import { useState } from "react";
 import axios from "axios";
 import { userState } from "../../states/chatState";
 
-// "name": "string",
-// "description": "string",
-// "users": [],
-// "owner": "string"
 
 const CreateChatRoom = () => {
   const [name, setName] = useState("");

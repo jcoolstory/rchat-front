@@ -8,6 +8,7 @@ export type ChatRoomType = {
 };
 
 export type ChatMessageType = {
+  _id?: string;
   roomId?: string;
   timestamp?: number;
   sender: string;
