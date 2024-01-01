@@ -1,7 +1,5 @@
 import type { NextPageContext } from "next";
 import Head from "next/head";
-import ChatInput from "../../common/component/ChatInput";
-import ChatHistoryWindow from "../../common/component/ChatHistoryWindow";
 import { ReactElement, useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
@@ -15,17 +13,15 @@ import {
   TrDataType,
   TrType,
 } from "../../types/chat";
-import { Navigation } from "../../common/component/Navigation";
-import ChatUserList from "../../common/component/ChatUserList";
-import { useSockChat } from "../../common/hooks/useSockChat";
-import SettingView from "../../common/component/SettingView";
-import styles from "../../common/component/Chating.module.css";
-import LeftMenu from "../../common/component/LeftMenu";
+import SettingView from "@components/SettingView";
+import styles from "@styles/Chating.module.css";
+import LeftMenu from "@components/LeftMenu";
 import { wsm } from "../../common/model/chat";
 import { NextPageWithLayout } from "../_app";
-import { loadId, showEnterNamePopupState } from "../../common/component/uiState";
-import { EnterNamePopup } from "../../common/component/EnterName";
-import { createMesage } from "../../common/component/model";
+import { loadId, showEnterNamePopupState } from "@components/uiState";
+import { EnterNamePopup } from "@components/EnterName";
+import ChatUserList from "@components/chat/ChatUserList";
+import { ChatMain } from "@components/chat/ChatMain";
 
 type ChatRoomPageProps = {
   rooms: ChatRoomType[];
@@ -50,15 +46,8 @@ const ChatRoomPage: NextPageWithLayout<ChatRoomPageProps> = ({
     setChatMessages(chatHistory);
     setRoomInformation(roomData);
     wsm.onReceive(receiveMessage);
-
   }, []);
 
-  const { sendMessage } = useSockChat(roomData);
-
-  const handleMessage = async (message: string) => {
-    const send = createMesage({roomId: roomData.id,  id:"", message:message})
-    await sendMessage(send);
-  };
 
   return (
     <div>
@@ -70,11 +59,7 @@ const ChatRoomPage: NextPageWithLayout<ChatRoomPageProps> = ({
       <main>
         <div className={styles.main}>
           <LeftMenu rooms={rooms} />
-          <div className={styles.dContainer}>
-            <Navigation title={roomData.name} />
-            <ChatHistoryWindow />
-            <ChatInput sendMessage={handleMessage} />
-          </div>
+          <ChatMain roomData={roomData}/>
         </div>
       </main>
       <SettingView />

@@ -1,8 +1,8 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-import styles from "./Chating.module.css";
-import { chatUserListPopupState } from "./uiState";
+import styles from "@styles/Chating.module.css";
+import { chatUserListPopupState } from "../uiState";
 import { useMemo } from "react";
-import { chatRoomInformationState } from "../../states/chatState";
+import { chatRoomInformationState } from "../../../states/chatState";
 
 const ChatUserList = () => {
   const [showUserList, setShowUserList] = useRecoilState<boolean>(

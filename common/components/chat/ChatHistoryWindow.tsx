@@ -1,6 +1,6 @@
 import { useRecoilValue } from "recoil";
-import { chatRoomMessagesState, userState } from "../../states/chatState";
-import styles from "./Chating.module.css";
+import { chatRoomMessagesState, userState } from "../../../states/chatState";
+import styles from "@styles/Chating.module.css";
 import { useEffect, useMemo, useRef } from "react";
 import MessageBalloon from "./MessageBallon";
 

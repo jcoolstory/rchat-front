@@ -1,4 +1,4 @@
-import styles from "./Chating.module.css";
+import styles from "@styles/Chating.module.css";
 import { BsArrowLeft } from "react-icons/bs";
 import { BsFillFileEarmarkPersonFill } from "react-icons/bs";
 import { BsGear } from "react-icons/bs";

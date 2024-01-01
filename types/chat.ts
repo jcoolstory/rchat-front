@@ -16,6 +16,14 @@ export type ChatMessageType = {
   message: string;
 };
 
+export type InputChatMessageType = {
+  roomId: string;
+  timestamp?: number;
+  sender?: string;
+  to?: string;
+  message: string;
+};
+
 export type TrDataType = {
   type: string;
   subType: string;

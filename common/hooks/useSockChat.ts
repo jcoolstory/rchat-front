@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { chatRoomMessagesState, userState } from "../../states/chatState";
-import { ChatRoomType, ChatMessageType, TrDataType, TrType } from "../../types/chat";
+import { ChatRoomType, ChatMessageType, TrDataType, TrType, InputChatMessageType } from "../../types/chat";
 import { UserType } from "../../types/user";
 import { PayloadSendMessage, wsm } from "../model/chat";
 
@@ -10,7 +10,7 @@ export const useSockChat = (roomData: ChatRoomType) => {
     const setChatMessages = useSetRecoilState(chatRoomMessagesState);
     
     const sendMessage = useCallback(
-      async (message: ChatMessageType) => {
+      async (message: InputChatMessageType) => {
         message.sender = user.id;
         message.roomId = roomData.id;
         const newMessage: PayloadSendMessage = {

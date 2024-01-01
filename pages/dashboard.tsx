@@ -2,7 +2,7 @@ import type { NextPageContext } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { ChatRoomType } from "../types/chat";
-import { EnterNamePopup } from "../common/component/EnterName";
+import { EnterNamePopup } from "@components/EnterName";
 
 type ChatRoomCardProps = {
   children: React.ReactNode;

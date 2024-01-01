@@ -1,9 +1,9 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-import styles from "./Chating.module.css";
-import { createChatViewPopupState } from "./uiState";
+import styles from "@styles/Chating.module.css";
+import { createChatViewPopupState } from "../uiState";
 import { useState } from "react";
 import axios from "axios";
-import { userState } from "../../states/chatState";
+import { userState } from "../../../states/chatState";
 
 
 const CreateChatRoom = () => {

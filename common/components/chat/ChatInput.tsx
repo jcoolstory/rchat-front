@@ -1,6 +1,4 @@
 import { KeyboardEvent, useRef, useState } from "react";
-import { createMesage } from "./model";
-import { ChatMessageType } from "../../types/chat";
 
 type ChatInputProps = {
   sendMessage: (nessage:string) => void;

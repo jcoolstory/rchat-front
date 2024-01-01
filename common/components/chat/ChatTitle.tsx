@@ -1,4 +1,4 @@
-import styles from "./Chating.module.css";
+import styles from "@styles/Chating.module.css";
 
 type ChatTitleProps = {
     name: string

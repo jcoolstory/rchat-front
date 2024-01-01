@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import styles from "./Chating.module.css";
+import styles from "@styles/Chating.module.css";
 import { saveId, showEnterNamePopupState } from "./uiState";
 import { UserType } from "../../types/user";
 import { userState } from "../../states/chatState";

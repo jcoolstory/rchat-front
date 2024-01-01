@@ -1,7 +1,7 @@
 import React from "react";
 import { useMemo } from "react";
-import { ChatMessageType } from "../../types/chat";
-import styles from "./Chating.module.css";
+import { ChatMessageType } from "../../../types/chat";
+import styles from "@styles/Chating.module.css";
 
 const MessageBalloon = ({
   message,

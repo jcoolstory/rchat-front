@@ -1,10 +1,10 @@
-import { ChatRoomType, ChatMessageType, TrDataType, TrType } from "../../types/chat";
+import { ChatRoomType, ChatMessageType, TrDataType, TrType, InputChatMessageType } from "../../types/chat";
 
 export type PayloadPollingMessage = {
 };
 
 export type PayloadSendMessage = {
-  message: ChatMessageType;
+  message: ChatMessageType | InputChatMessageType;
 } & PayloadPollingMessage;
 
 export const chatHistory: any = {

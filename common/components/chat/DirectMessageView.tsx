@@ -1,8 +1,8 @@
 import { useRecoilState } from "recoil";
-import styles from "./Chating.module.css";
-import { directMessageViewPopupState } from "./uiState";
+import styles from "@styles/Chating.module.css";
+import { directMessageViewPopupState } from "../uiState";
 import { ChangeEvent, useMemo, useState } from "react";
-import { wsm } from "../model/chat";
+import { wsm } from "../../model/chat";
 
 const DirectMessageView = () => {
   const [to, setTo] = useState("");

@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import styles from "./Chating.module.css";
+import styles from "@styles/Chating.module.css";
 import { loadId, saveId, settingViewPopupState } from "./uiState";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { userState } from "../../states/chatState";
