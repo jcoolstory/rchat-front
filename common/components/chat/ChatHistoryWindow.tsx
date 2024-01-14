@@ -15,7 +15,7 @@ const ChatHistoryWindow = () => {
   
   const scrollToBottom = () => {
     if (bottomRef.current)
-        bottomRef.current.scrollIntoView({ behavior: "smooth" });
+        bottomRef.current.scrollIntoView();
   }
 
   return (

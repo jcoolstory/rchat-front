@@ -1,23 +1,33 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styles from "@styles/Chating.module.css";
 import { directMessageViewPopupState } from "../uiState";
 import { ChangeEvent, useMemo, useState } from "react";
 import { wsm } from "../../model/chat";
+import axios from "axios";
+import { userState } from "states/chatState";
 
 const DirectMessageView = () => {
   const [to, setTo] = useState("");
   const [message, setMessage] = useState("");
-
+  const user = useRecoilValue(userState);
   const [showDirectMessage, setShowDirectMessage] = useRecoilState<boolean>(
     directMessageViewPopupState
   );
 
   const handleClickSend = () => {
     setShowDirectMessage(false);
-    const newMessage = {
-      to,
-      message,
-    };
+    const response = axios.post("http://127.0.0.1:8000/api/chatroom", {
+      name: `${user.id},${to}`,
+      description:"",
+      owner: user.id,
+      users: [to],
+      type: "directmessage"
+  })
+
+  const newMessage = {
+    to,
+    message,
+  };
     wsm.sendDirectMessage(newMessage);
   };
 

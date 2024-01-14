@@ -36,7 +36,7 @@ export const Navigation = ({title=""} : {title?:string}) => {
   }
   return (
     <div className={styles.nav}>
-      <div><BsArrowLeft onClick={handleHistoryBack}/> {title}</div><RightMenu  />
+      <div>{title}</div><RightMenu  />
     </div>
   );
 };

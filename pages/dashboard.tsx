@@ -14,7 +14,7 @@ const ChatRoomCardContainer = ({ children }: ChatRoomCardProps) => {
 
 const ChatRoomCard = ({data}: {data: ChatRoomType} ) => {
   return (
-    <a href={`/chatroom/${data.id}`} className={styles.card}>
+    <a href={`/wsroom/${data._id}`} className={styles.card}>
       <h2>{data.name} &rarr; </h2>
       <p>{data.description}</p>
     </a>
@@ -45,9 +45,9 @@ const Dashboard = ({rooms}: {rooms: ChatRoomType[]}) => {
 };
 
 Dashboard.getInitialProps = async (ctx: NextPageContext) => {
-    const res = await fetch('http://localhost:13000/api/chatrooms');
+    const res = await fetch('http://localhost:8000/api/chatroom');
     const json = await res.json();
-    return {rooms:json} 
+    return {rooms:json.data} 
 }
 
 export default Dashboard;

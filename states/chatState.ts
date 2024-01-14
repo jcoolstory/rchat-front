@@ -50,3 +50,9 @@ export const webSocketState = atom<WSManager>( {
   key: "webSocketState",
   default: undefined
 })
+
+export const roomsState = atom( {
+  key: "roomsState",
+  default: {
+  }
+})

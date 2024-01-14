@@ -24,7 +24,8 @@ const CreateChatRoom = () => {
         name: name,
         description,
         owner: user.id,
-        users: userArr
+        users: userArr,
+        type: "channel"
     })
   };
 

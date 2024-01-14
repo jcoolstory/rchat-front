@@ -1,7 +1,7 @@
 import { KeyboardEvent, useRef, useState } from "react";
 
 type ChatInputProps = {
-  sendMessage: (nessage:string) => void;
+  sendMessage: (nessage: string) => void;
 };
 
 const ChatInput = ({ sendMessage }: ChatInputProps) => {
@@ -10,10 +10,9 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const handleKeydown = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
-    
     if (event.key === "Enter") {
-        event.preventDefault();
-        const trimMessage = inputMessage.trim();
+      event.preventDefault();
+      const trimMessage = inputMessage.trim();
       if (!trimMessage) return;
       sendMessage(trimMessage);
       setInputMessage("");
@@ -22,19 +21,21 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
   };
 
   return (
-    <textarea
-      style={{
-        width: "100%",
-        border: "1px solid #eee",
-        height: 50,
-        padding: 5,
-      }}
-      ref={inputRef}
-      placeholder="메세지를 입력하세요."
-      value={inputMessage}
-      onChange={(e) => setInputMessage(e.target.value)}
-      onKeyPress={handleKeydown}
-    ></textarea>
+    <div >
+      <textarea
+        style={{
+          width: "100%",
+          border: "1px solid #eee",
+          height: 50,
+          padding: 5,
+        }}
+        ref={inputRef}
+        placeholder="메세지를 입력하세요."
+        value={inputMessage}
+        onChange={(e) => setInputMessage(e.target.value)}
+        onKeyPress={handleKeydown}
+      ></textarea>
+    </div>
   );
 };
 
