@@ -27,7 +27,7 @@ const ChatUserList = () => {
       <div>
         <ul>
             {chatRoomInforation.users && chatRoomInforation.users.map( (v: string)=> {
-                return <li>{v} </li>
+                return <li key={v}>{v} </li>
             })}
         </ul>
       </div>

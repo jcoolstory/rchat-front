@@ -4,35 +4,42 @@ import { createChatViewPopupState } from "../uiState";
 import { useState } from "react";
 import axios from "axios";
 import { userState } from "../../../states/chatState";
+import { useRouter } from "next/router";
 
 
 const CreateChatRoom = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [users, setUsers] = useState("");
-  const user = useRecoilValue(userState);
 
+  const router = useRouter();
+  const user = useRecoilValue(userState);
 
   const [showDirectMessage, setShowDirectMessage] = useRecoilState<boolean>(
     createChatViewPopupState
   );
 
-  const handleCreateClick = () => {
+  const handleCreateClick = async () => {
     setShowDirectMessage(false);
     const userArr = users.split(",");
-    const response = axios.post("http://127.0.0.1:8000/api/chatroom", {
+    const response = await axios.post("http://127.0.0.1:8000/api/chatroom", {
         name: name,
         description,
         owner: user.id,
         users: userArr,
         type: "channel"
     })
+
+    if (response.status === 200) {
+      const { id } = response.data;
+      router.push(`/wsroom/${id}`);
+    }
   };
 
   if (!showDirectMessage) return null;
   return (
     <div className={styles.layerPopup1}>
-      <div className={styles.dim}>
+      <div className={styles.dim} onClick={()=>setShowDirectMessage(false)}>
         <div className={styles.popup}>
           <div className={styles.popupcontent}>
             <input

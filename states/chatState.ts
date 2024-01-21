@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 import { UserType } from "../types/user";
 import { ChatRoomType, ChatMessageType } from "../types/chat";
 import { WSManager } from "../common/model/chat";
@@ -42,7 +42,8 @@ export const chatRoomInformationState = atom<ChatRoomType>( {
     name:"",
     description: "",
     users:[],
-    owner: ""
+    owner: "",
+    type: "channel"
   }
 })
 
@@ -54,5 +55,26 @@ export const webSocketState = atom<WSManager>( {
 export const roomsState = atom( {
   key: "roomsState",
   default: {
+  }
+})
+
+export const chatRoomsState = atom<ChatRoomType[]>({
+  key: "chatRoomsState",
+  default: []
+})
+
+export const chatChannelRoomState = selector({
+  key: "chatChannelRoomState",
+  get: ({get}) => {
+    const rooms = get(chatRoomsState);
+    return rooms.filter( (room) =>  room.type === "channel")
+  }
+})
+
+export const chatDirectMessageRoomState = selector({
+  key: "chatDirectMessageRoomState",
+  get: ({get}) => {
+    const rooms = get(chatRoomsState);
+    return rooms.filter( (room) =>  room.type === "directmessage")
   }
 })

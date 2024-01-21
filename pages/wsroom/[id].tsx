@@ -1,28 +1,21 @@
 import type { NextPageContext } from "next";
 import Head from "next/head";
-import { ReactElement, useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
 import {
   chatRoomInformationState,
-  chatRoomMessagesState,
-  userState,
+  chatRoomsState,
 } from "../../states/chatState";
-import {
-  ChatRoomType,
-  TrDataType,
-  TrType,
-} from "../../types/chat";
+import { ChatRoomType, TrDataType, TrType } from "../../types/chat";
 import SettingView from "@components/SettingView";
 import styles from "@styles/Chating.module.css";
 import LeftMenu from "@components/LeftMenu";
 import { wsm } from "../../common/model/chat";
 import { NextPageWithLayout } from "../_app";
 import ChatUserList from "@components/chat/ChatUserList";
-import { ChatMain } from "@components/chat/ChatMain";
+import ChatMain from "@components/chat/ChatMain";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
-import { getChatHistory, getRoomList } from "./api";
-
+import { getRoomList } from "./api";
 
 type ChatRoomPageProps = {
   rooms: ChatRoomType[];
@@ -34,29 +27,24 @@ const ChatRoomPage: NextPageWithLayout<ChatRoomPageProps> = ({
   roomData,
 }) => {
   const setRoomInformation = useSetRecoilState(chatRoomInformationState);
-  const setChatMessages = useSetRecoilState(chatRoomMessagesState);
+  const setRooms = useSetRecoilState(chatRoomsState);
   const receiveMessage = (data: TrDataType) => {
-    if (data.type === TrType.private_message) {
+    if (data.type === TrType.direct_message) {
       alert(data.content.message);
     }
   };
 
-  const {
-    data: chatHistory,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["getChatHistory"],
-    queryFn: async () => {
-      const data = await getChatHistory(roomData.id);
-      setChatMessages(data);
-    },
-  });
+  useEffect(() => {
+    wsm.onReceive(receiveMessage);
+  }, []);
 
   useEffect(() => {
     setRoomInformation(roomData);
-    wsm.onReceive(receiveMessage);
-  }, []);
+  }, [roomData]);
+
+  useEffect(() => {
+    setRooms(rooms);
+  }, [rooms]);
 
   return (
     <div>
@@ -67,7 +55,7 @@ const ChatRoomPage: NextPageWithLayout<ChatRoomPageProps> = ({
       </Head>
       <main>
         <div className={styles.main}>
-          <LeftMenu rooms={rooms} />
+          <LeftMenu />
           <ChatMain roomData={roomData} />
         </div>
       </main>

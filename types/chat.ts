@@ -5,6 +5,7 @@ export type ChatRoomType = {
   description: string;
   users?: string[];
   owner: string;
+  type: "channel" | "directmessage"
 };
 
 export type ChatMessageType = {
@@ -35,5 +36,5 @@ export const TrType = {
   cmd: "cmd",
   enter: "enter_room",
   exit: "exit_room",
-  private_message: "pm",
+  direct_message: "dm",
 };
