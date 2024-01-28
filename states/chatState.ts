@@ -1,12 +1,12 @@
 import { atom, selector } from "recoil";
 import { UserType } from "../types/user";
 import { ChatRoomType, ChatMessageType } from "../types/chat";
-import { WSManager } from "../common/model/chat";
+import { WSManager } from "common/model/WSManager";
 
 const chatRoomMessagesInitial : ChatMessageType[] = [];
 
 export const chatRoomMessagesState = atom<ChatMessageType[]>({
-  key: "chatRoomMessagesSt2ate",
+  key: "chatRoomMessagesState",
   default: chatRoomMessagesInitial,
 });
 

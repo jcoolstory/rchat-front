@@ -11,3 +11,11 @@ export const getRoomList = async () => {
   const rooms = await roomsRes.json();
   return rooms.data;
 };
+
+export const getChartHistoricals = async (ticker: string) => {
+  const chatHistoryRes = await fetch(
+    `http://localhost:8000/api/chart/historicals/${ticker}`
+  );
+  const chatHistory = await chatHistoryRes.json();
+  return chatHistory.data;
+};

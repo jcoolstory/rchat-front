@@ -14,6 +14,7 @@ export type ChatMessageType = {
   timestamp?: number;
   sender: string;
   to?: string;
+  type?: string;
   message: string;
 };
 

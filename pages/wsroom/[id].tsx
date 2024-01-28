@@ -10,7 +10,7 @@ import { ChatRoomType, TrDataType, TrType } from "../../types/chat";
 import SettingView from "@components/SettingView";
 import styles from "@styles/Chating.module.css";
 import LeftMenu from "@components/LeftMenu";
-import { wsm } from "../../common/model/chat";
+import { wsm } from "../../common/model/WSManager";
 import { NextPageWithLayout } from "../_app";
 import ChatUserList from "@components/chat/ChatUserList";
 import ChatMain from "@components/chat/ChatMain";

@@ -16,7 +16,9 @@ export const useHistoryHooks = (roomData: ChatRoomType) => {
       queryFn: async () => {
         const data = await getChatHistory(roomData.id);
         setChatMessages(data);
+        return data;
       },
+      refetchOnWindowFocus: false,
     });
     return {
       chatHistory,

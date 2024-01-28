@@ -1,4 +1,5 @@
 import { KeyboardEvent, useRef, useState } from "react";
+import InputMessage from "./InputMessage";
 
 type ChatInputProps = {
   sendMessage: (nessage: string) => void;
@@ -9,11 +10,13 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
   const curserPos = useRef(inputMessage.length);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
+  const [ext, setExt] = useState([]);
   const handleKeydown = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
     if (event.key === "Enter") {
       event.preventDefault();
       const trimMessage = inputMessage.trim();
       if (!trimMessage) return;
+  
       sendMessage(trimMessage);
       setInputMessage("");
       if (inputRef.current) curserPos.current = inputRef.current.selectionStart;
@@ -21,7 +24,10 @@ const ChatInput = ({ sendMessage }: ChatInputProps) => {
   };
 
   return (
-    <div >
+    <div>
+      {
+        ext && ext
+      }
       <textarea
         style={{
           width: "100%",
