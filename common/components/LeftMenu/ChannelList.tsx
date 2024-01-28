@@ -1,3 +1,4 @@
+import Button from "@components/Button";
 import { createChatViewPopupState } from "@components/uiState";
 import styles from "@styles/Chating.module.css";
 import Link from "next/link";
@@ -38,7 +39,7 @@ const ChannelList = () => {
     <>
       <div className={styles.leftGroupTitle}>
         Channel
-        <div onClick={handleCreateClick}>+</div>
+        <Button onClick={handleCreateClick}>+</Button>
       </div>
       <ul className={styles.leftList}>
         {channelRooms.map((room: ChatRoomType) => (

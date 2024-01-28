@@ -7,6 +7,7 @@ import { userState } from "states/chatState";
 import { useRouter } from "next/router";
 import { UserType } from "types/user";
 import { useMutation } from "@tanstack/react-query";
+import { Button, FormControl, TextField } from "@mui/material";
 
 const createDirectMessageRoom = async (user: UserType, to: string) => {
   const response = await axios.post("http://127.0.0.1:8000/api/chatroom", {
@@ -51,13 +52,17 @@ const CreateDirectMessageView = () => {
       ></div>
       <div className={styles.popup}>
         <div className={styles.popupcontent}>
-          <input
-            type="text"
-            placeholder="ID"
-            onChange={(e) => setTo(e.target.value)}
-          ></input>
+          <h3>Create DirectMessage</h3>
+          <FormControl fullWidth sx={{ my: 1 }}>
+            <TextField
+              size="small"
+              type="text"
+              placeholder="ID"
+              onChange={(e) => setTo(e.target.value)}
+            />
+          </FormControl>
           <div className={styles.footer}>
-            <button onClick={handleClickSend}>만들기</button>
+            <Button onClick={handleClickSend}>Create</Button>
           </div>
         </div>
       </div>

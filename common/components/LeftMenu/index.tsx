@@ -2,7 +2,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import CreateChatRoom from "../chat/CreateChatRoom";
 import styles from "@styles/Chating.module.css";
 import {
-  loadId,
+  loadId, settingViewPopupState,
 } from "../uiState";
 import {
   userState,
@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 import CreateDirectMessageView from "../chat/CreateDirectMessageView";
 import DirectMessageList from "./DirectMessageList";
 import ChannelList from "./ChannelList";
+import { BsGear } from "react-icons/bs";
+import Button from "@components/Button";
 
 const UserInfo = () => {
   const [id, setId] = useState("");
@@ -24,11 +26,23 @@ const UserInfo = () => {
 };
 
 const LeftMenu = () => {
+  const setShowSettingView = useSetRecoilState<boolean>(
+    settingViewPopupState
+  );
+
+  const handleSettingClick = () => {
+    setShowSettingView(true);
+  };
+  
+
   return (
     <div className={styles.left}>
       <div className={styles.leftLabel}>
         <div className={styles.leftHome}>RChat</div>
-        <UserInfo />
+        <div className={styles.userInfo}>
+          <UserInfo />
+          <Button  onClick={handleSettingClick}><BsGear/></Button>
+        </div>
       </div>
       <hr />
       <ChannelList />

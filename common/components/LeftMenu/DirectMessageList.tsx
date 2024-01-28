@@ -8,6 +8,7 @@ import {
 import { ChatRoomType } from "types/chat";
 import styles from "@styles/Chating.module.css";
 import React from "react";
+import Button from "@components/Button";
 
 const Item = React.memo(
   ({ room, active }: { room: ChatRoomType; active: boolean }) => {
@@ -40,7 +41,7 @@ const DirectMessageList = () => {
   return (
     <>
       <div className={styles.leftGroupTitle}>
-        다이렉트 메세지 <div onClick={handleClick}>+</div>
+        다이렉트 메세지 <Button onClick={handleClick}>+</Button>
       </div>
       <ul className={styles.leftList}>
         {directMessages.map((room: ChatRoomType) => (
