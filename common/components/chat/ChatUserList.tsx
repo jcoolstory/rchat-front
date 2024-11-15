@@ -3,6 +3,8 @@ import styles from "@styles/Chating.module.css";
 import { chatUserListPopupState } from "../uiState";
 import { useMemo } from "react";
 import { chatRoomInformationState } from "../../../states/chatState";
+import { BsX } from "react-icons/bs";
+import Button from "@components/Button";
 
 const ChatUserList = () => {
   const [showUserList, setShowUserList] = useRecoilState<boolean>(
@@ -22,12 +24,12 @@ const ChatUserList = () => {
   return (
     <div className={className}>
       <div className={styles.userlisttop}>
-        <button onClick={handleCloseClick}>close</button>
+        <Button onClick={handleCloseClick}><BsX/></Button>
       </div>
       <div>
         <ul>
             {chatRoomInforation.users && chatRoomInforation.users.map( (v: string)=> {
-                return <li>{v} </li>
+                return <li key={v}>{v} </li>
             })}
         </ul>
       </div>

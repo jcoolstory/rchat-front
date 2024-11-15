@@ -4,54 +4,64 @@ import { createChatViewPopupState } from "../uiState";
 import { useState } from "react";
 import axios from "axios";
 import { userState } from "../../../states/chatState";
-
+import { useRouter } from "next/router";
+import { Button, FormControl, TextField } from "@mui/material";
 
 const CreateChatRoom = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [users, setUsers] = useState("");
-  const user = useRecoilValue(userState);
 
+  const router = useRouter();
+  const user = useRecoilValue(userState);
 
   const [showDirectMessage, setShowDirectMessage] = useRecoilState<boolean>(
     createChatViewPopupState
   );
 
-  const handleCreateClick = () => {
+  const handleCreateClick = async () => {
     setShowDirectMessage(false);
     const userArr = users.split(",");
-    const response = axios.post("http://127.0.0.1:8000/api/chatroom", {
-        name: name,
-        description,
-        owner: user.id,
-        users: userArr
-    })
+    const response = await axios.post("http://127.0.0.1:8000/api/chatroom", {
+      name: name,
+      description,
+      owner: user.id,
+      users: userArr,
+      type: "channel",
+    });
+
+    if (response.status === 200) {
+      const { id } = response.data;
+      router.push(`/wsroom/${id}`);
+    }
   };
 
   if (!showDirectMessage) return null;
   return (
     <div className={styles.layerPopup1}>
-      <div className={styles.dim}>
-        <div className={styles.popup}>
-          <div className={styles.popupcontent}>
-            <input
-              type="text"
+      <div
+        className={styles.dim}
+        onClick={() => setShowDirectMessage(false)}
+      ></div>
+      <div className={styles.popup}>
+        <div className={styles.popupcontent}>
+          <h3>Create Channel</h3>
+          <FormControl fullWidth sx={{ my: 1 }}>
+            <TextField
+              size="small"
               placeholder="name"
               onChange={(e) => setName(e.target.value)}
-            ></input>
-            <input
-              type="text"
-              placeholder="설명"
-              onChange={(e) => setDescription(e.target.value)}
             />
-            <input
-              type="text"
+          </FormControl>
+          <FormControl fullWidth sx={{ my: 1 }}>
+            <TextField
+              size="small"
               placeholder="users"
-              onChange={(e) => setUsers(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
             />
-            <div className={styles.footer}>
-              <button onClick={handleCreateClick}>전송</button>
-            </div>
+          </FormControl>
+          <div className={styles.footer}>
+            <Button onClick={handleCreateClick}>Create</Button>
           </div>
         </div>
       </div>

@@ -3,7 +3,8 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { chatRoomMessagesState, userState } from "../../states/chatState";
 import { ChatRoomType, ChatMessageType, TrDataType, TrType, InputChatMessageType } from "../../types/chat";
 import { UserType } from "../../types/user";
-import { PayloadSendMessage, wsm } from "../model/chat";
+import { PayloadSendMessage } from "../model/chat";
+import { wsm } from "common/model/WSManager";
 
 export const useSockChat = (roomData: ChatRoomType) => {
     const user = useRecoilValue<UserType>(userState);

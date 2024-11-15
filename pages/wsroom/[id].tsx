@@ -1,53 +1,50 @@
 import type { NextPageContext } from "next";
 import Head from "next/head";
-import { ReactElement, useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
 import {
   chatRoomInformationState,
-  chatRoomMessagesState,
-  userState,
+  chatRoomsState,
 } from "../../states/chatState";
-import {
-  ChatRoomType,
-  ChatMessageType,
-  TrDataType,
-  TrType,
-} from "../../types/chat";
+import { ChatRoomType, TrDataType, TrType } from "../../types/chat";
 import SettingView from "@components/SettingView";
 import styles from "@styles/Chating.module.css";
 import LeftMenu from "@components/LeftMenu";
-import { wsm } from "../../common/model/chat";
+import { wsm } from "../../common/model/WSManager";
 import { NextPageWithLayout } from "../_app";
-import { loadId, showEnterNamePopupState } from "@components/uiState";
-import { EnterNamePopup } from "@components/EnterName";
 import ChatUserList from "@components/chat/ChatUserList";
-import { ChatMain } from "@components/chat/ChatMain";
+import ChatMain from "@components/chat/ChatMain";
+import axios from "axios";
+import { getRoomList } from "./api";
 
 type ChatRoomPageProps = {
   rooms: ChatRoomType[];
   roomData: ChatRoomType;
-  chatHistory: ChatMessageType[];
 };
 
 const ChatRoomPage: NextPageWithLayout<ChatRoomPageProps> = ({
   rooms,
   roomData,
-  chatHistory,
 }) => {
   const setRoomInformation = useSetRecoilState(chatRoomInformationState);
-  const setChatMessages = useSetRecoilState(chatRoomMessagesState);
+  const setRooms = useSetRecoilState(chatRoomsState);
   const receiveMessage = (data: TrDataType) => {
-    if (data.type === TrType.private_message) {
+    if (data.type === TrType.direct_message) {
       alert(data.content.message);
     }
   };
 
   useEffect(() => {
-    setChatMessages(chatHistory);
-    setRoomInformation(roomData);
     wsm.onReceive(receiveMessage);
   }, []);
 
+  useEffect(() => {
+    setRoomInformation(roomData);
+  }, [roomData]);
+
+  useEffect(() => {
+    setRooms(rooms);
+  }, [rooms]);
 
   return (
     <div>
@@ -58,8 +55,8 @@ const ChatRoomPage: NextPageWithLayout<ChatRoomPageProps> = ({
       </Head>
       <main>
         <div className={styles.main}>
-          <LeftMenu rooms={rooms} />
-          <ChatMain roomData={roomData}/>
+          <LeftMenu />
+          <ChatMain roomData={roomData} />
         </div>
       </main>
       <SettingView />
@@ -68,52 +65,29 @@ const ChatRoomPage: NextPageWithLayout<ChatRoomPageProps> = ({
   );
 };
 
-type WrapperProps = {
-	children: React.ReactNode;
-}
-
-const Layout = ({ children }: WrapperProps) => {
-  const [show, setShow] = useRecoilState(showEnterNamePopupState);
-  const [user, setId] = useRecoilState(userState);
-
-  useEffect(() => {
-    const id = loadId();
-    if (id) {
-      setId( (prev)=> ({...prev, id}));
-      setShow(false);
-    } else {
-      setShow(true);
-    }
-  }, [user.id]);
-
-  if (!user.id) return <EnterNamePopup></EnterNamePopup>
-  return <>{children}</>;
-};
-
-const NestedLayout = ({children}: WrapperProps) => {
-  return <div>{children}</div>;
-};
-
-ChatRoomPage.getLayout = (page: ReactElement) => {
-  return (
-    <Layout>
-      <NestedLayout>{page}</NestedLayout>
-    </Layout>
-  );
-};
-
 export const getServerSideProps = async (ctx: NextPageContext) => {
-  const id = ctx.query.id;
-  const res = await fetch(`http://localhost:8000/api/chatroom/${id}`);
-  const roomData = await res.json();
-  const chatHistoryRes = await fetch(
-    `http://localhost:8000/api/chatroom/${id}/history`
-  );
-  const chatHistory = await chatHistoryRes.json();
-  const roomsRes = await fetch("http://127.0.0.1:8000/api/chatroom");
-  const rooms = await roomsRes.json();
+  if (ctx.req?.headers?.cookie) {
+    let { cookie } = ctx.req?.headers;
+    cookie = cookie ? cookie : "";
+  }
 
-  return { props: { rooms, roomData, chatHistory: chatHistory.data } };
+  let token = "";
+  const headers = {
+    Authorization: `Token ${token}`,
+  };
+
+  const id = ctx.query.id;
+  const res = await axios(`http://localhost:8000/api/chatroom/${id}`, {
+    headers,
+  });
+  const roomData = await res.data;
+  const rooms = await getRoomList();
+  return {
+    props: {
+      rooms,
+      roomData: roomData.data,
+    },
+  };
 };
 
 export default ChatRoomPage;
