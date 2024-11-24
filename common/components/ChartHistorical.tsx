@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getChartHistoricals } from "pages/wsroom/api";
+import { getChartHistoricals } from "common/api";
 import dynamic from "next/dynamic";
 
 const ComponentsWithNoSSR = dynamic(

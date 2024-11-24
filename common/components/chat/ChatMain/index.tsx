@@ -41,7 +41,6 @@ const ChatMain = ({ roomData }: { roomData: ChatRoomType }) => {
     <div className={styles.dContainer}>
       <Navigation title={roomData.name} />
       <ChatHistoryWindow />
-      { <OverlayLoadingBar />}
       <ChatInput sendMessage={handleMessage} />
     </div>
   );

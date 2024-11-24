@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getChatHistory } from "pages/wsroom/api";
+import { getChatHistory } from "common/api";
 import { useSetRecoilState } from "recoil";
 import { chatRoomMessagesState } from "states/chatState";
 import { ChatRoomType } from "types/chat";
