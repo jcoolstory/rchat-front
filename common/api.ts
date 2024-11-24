@@ -19,3 +19,5 @@ export const getChartHistoricals = async (ticker: string) => {
   const chatHistory = await chatHistoryRes.json();
   return chatHistory.data;
 };
+
+export default {}

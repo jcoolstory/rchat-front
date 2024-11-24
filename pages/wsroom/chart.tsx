@@ -2,7 +2,7 @@ import LineChart from "@components/LineChart";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import { NextPageWithLayout } from "pages/_app";
-import { getChartHistoricals } from "./api";
+import { getChartHistoricals } from "../../common/api";
 
 const ComponentsWithNoSSR = dynamic(
   // typescript에서 props를 전달할때 interface를 정의해줍니다.

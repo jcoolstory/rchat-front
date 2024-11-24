@@ -3,6 +3,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { ChatRoomType } from "../types/chat";
 import { EnterNamePopup } from "@components/EnterName";
+import Link from "next/link";
 
 type ChatRoomCardProps = {
   children: React.ReactNode;
@@ -14,10 +15,10 @@ const ChatRoomCardContainer = ({ children }: ChatRoomCardProps) => {
 
 const ChatRoomCard = ({data}: {data: ChatRoomType} ) => {
   return (
-    <a href={`/wsroom/${data._id}`} className={styles.card}>
+    <Link href={`/wsroom/${data._id}`} className={styles.card}>
       <h2>{data.name} &rarr; </h2>
       <p>{data.description}</p>
-    </a>
+    </Link>
   );
 };
 
@@ -44,9 +45,15 @@ const Dashboard = ({rooms}: {rooms: ChatRoomType[]}) => {
   );
 };
 
+const fetchPosts = async () => {
+  const response = await fetch("http://localhost:8000/api/chatroom", {
+    cache: "no-store",
+  });
+  return response.json();
+};
+
 Dashboard.getInitialProps = async (ctx: NextPageContext) => {
-    const res = await fetch('http://localhost:8000/api/chatroom');
-    const json = await res.json();
+    const json = await fetchPosts();
     return {rooms:json.data} 
 }
 

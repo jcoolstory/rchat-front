@@ -15,7 +15,7 @@ import { NextPageWithLayout } from "../_app";
 import ChatUserList from "@components/chat/ChatUserList";
 import ChatMain from "@components/chat/ChatMain";
 import axios from "axios";
-import { getRoomList } from "./api";
+import { getRoomList } from "../../common/api";
 
 type ChatRoomPageProps = {
   rooms: ChatRoomType[];
@@ -68,7 +68,7 @@ const ChatRoomPage: NextPageWithLayout<ChatRoomPageProps> = ({
 export const getServerSideProps = async (ctx: NextPageContext) => {
   if (ctx.req?.headers?.cookie) {
     let { cookie } = ctx.req?.headers;
-    cookie = cookie ? cookie : "";
+    cookie = cookie || "";
   }
 
   let token = "";
